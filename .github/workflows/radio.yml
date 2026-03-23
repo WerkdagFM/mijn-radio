@@ -2,8 +2,6 @@ name: Radio
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 6 * * 1-5"
 
 jobs:
   run-radio:
@@ -12,8 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Liquidsoap
-        run: sudo apt-get update && sudo apt-get install -y liquidsoap
-
-      - name: Run radio
-        run: liquidsoap radio.liq
+      - name: Run Liquidsoap (via Docker)
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/app savonet/liquidsoap liquidsoap /app/radio.liq
