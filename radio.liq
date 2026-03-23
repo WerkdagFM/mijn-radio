@@ -3,14 +3,9 @@ set("log.stdout", true)
 radio2 = input.http("https://icecast.omroep.nl/radio2-bb-mp3")
 bnr = input.http("https://stream.bnr.nl/bnr_mp3_128_20")
 
-def switch() =
-  t = time()
+s = fallback([
+  switch([({ 8h-13h }, bnr)]),
+  radio2
+])
 
-  if (t >= 8h and t < 13h) then
-    bnr
-  else
-    radio2
-  end
-end
-
-output.file(%mp3, "stream.mp3", switch())
+output.file(%mp3, "out.mp3", s)
