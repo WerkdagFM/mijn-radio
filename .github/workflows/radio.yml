@@ -1,0 +1,18 @@
+name: Radio
+
+on:
+  schedule:
+    - cron: "0 6 * * 1-5"
+
+jobs:
+  run-radio:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Liquidsoap
+        run: sudo apt-get update && sudo apt-get install -y liquidsoap
+
+      - name: Run radio
+        run: liquidsoap radio.liq
